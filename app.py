@@ -111,6 +111,23 @@ st.markdown("""
         font-size: 0.92rem;
         margin-top: 0.6rem;
     }
+
+    /* 6. YAN MENÜ (SIDEBAR) RENGİ - Koyu Çelik Grisi/Füme */
+    [data-testid="stSidebar"] {
+        background-color: #1E293B !important; 
+    }
+    
+    /* Yan menüdeki yazıların koyu gri üzerinde net okunması için beyaz yapıyoruz */
+    [data-testid="stSidebar"] p, 
+    [data-testid="stSidebar"] div, 
+    [data-testid="stSidebar"] span, 
+    [data-testid="stSidebar"] label,
+    [data-testid="stSidebar"] h1,
+    [data-testid="stSidebar"] h2,
+    [data-testid="stSidebar"] h3 {
+        color: #F8FAFC !important;
+    }
+
     footer {visibility: hidden;}
 </style>
 """, unsafe_allow_html=True)

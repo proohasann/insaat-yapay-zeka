@@ -21,10 +21,10 @@ st.markdown("""
 <style>
     /* 1. ANA ARKA PLAN - MAVİ */
     .stApp, .main {
-        background-color: #1D4ED8 !important; /* Şık ve profesyonel bir mavi */
+        background-color: #1D4ED8 !important; 
     }
     
-    /* Mavi arka planda okunabilmesi için tüm genel metinleri beyaz yapıyoruz */
+    /* Mavi arka planda okunabilmesi için tüm genel metinler beyaz */
     .stApp h1, .stApp h2, .stApp h3, .stApp p, .stApp label, .stApp span, .stApp div {
         color: #F8FAFC !important;
     }
@@ -52,7 +52,6 @@ st.markdown("""
         -webkit-text-fill-color: #000000 !important;
         font-weight: bold !important;
     }
-    /* Sayı artırma/azaltma butonlarının (+ ve -) renkleri */
     div[data-baseweb="input"] svg {
         fill: #000000 !important;
     }
@@ -67,7 +66,7 @@ st.markdown("""
 
     /* 4. TAHMİN ET BUTONU - YEŞİL */
     .stButton > button {
-        background-color: #10B981 !important; /* Zümrüt Yeşili */
+        background-color: #10B981 !important; 
         color: white !important;
         border: none !important;
         font-size: 1.1rem !important;
@@ -76,7 +75,7 @@ st.markdown("""
         transition: all 0.2s ease-in-out;
     }
     .stButton > button:hover {
-        background-color: #059669 !important; /* Üzerine gelince daha koyu yeşil */
+        background-color: #059669 !important; 
         transform: scale(1.02);
     }
 
@@ -112,12 +111,12 @@ st.markdown("""
         margin-top: 0.6rem;
     }
 
-    /* 6. YAN MENÜ (SIDEBAR) RENGİ - Koyu Çelik Grisi/Füme */
+    /* 6. YAN MENÜ (SIDEBAR) - MAVİYE ZIT KİREMİT / TURUNCU */
     [data-testid="stSidebar"] {
-        background-color: #1E293B !important; 
+        background-color: #C2410C !important; /* Sıcak Pas / Kiremit Turuncusu */
     }
     
-    /* Yan menüdeki yazıların koyu gri üzerinde net okunması için beyaz yapıyoruz */
+    /* Yan menüdeki metinlerin okunabilirliği */
     [data-testid="stSidebar"] p, 
     [data-testid="stSidebar"] div, 
     [data-testid="stSidebar"] span, 
@@ -125,7 +124,11 @@ st.markdown("""
     [data-testid="stSidebar"] h1,
     [data-testid="stSidebar"] h2,
     [data-testid="stSidebar"] h3 {
-        color: #F8FAFC !important;
+        color: #FFFFFF !important;
+    }
+    
+    [data-testid="stSidebar"] hr {
+        border-color: rgba(255, 255, 255, 0.25) !important;
     }
 
     footer {visibility: hidden;}

@@ -17,67 +17,106 @@ st.set_page_config(
     layout="centered",
 )
 
-# YENİ RENK TEMASI (Mavi / Çelik Teması)
-PRIMARY = "#0284C7"    # Canlı Mavi
-NAVY = "#0F172A"       # Çok Koyu Lacivert (Başlık arka planı)
-BG_COLOR = "#F0F9FF"   # Açık Buz Mavisi (Genel arka plan)
-GREEN = "#059669"      # Zümrüt Yeşili
-RED = "#DC2626"        # Kırmızı
-
-st.markdown(f"""
+st.markdown("""
 <style>
-    /* Arka plan rengi değiştirildi */
-    .stApp {{ background-color: {BG_COLOR}; }}
-    .stApp header {{ background-color: transparent; }}
-    h1 {{ color: {NAVY}; }}
+    /* 1. ANA ARKA PLAN - MAVİ */
+    .stApp, .main {
+        background-color: #1D4ED8 !important; /* Şık ve profesyonel bir mavi */
+    }
     
-    .app-header {{
-        background-color: {NAVY};
+    /* Mavi arka planda okunabilmesi için tüm genel metinleri beyaz yapıyoruz */
+    .stApp h1, .stApp h2, .stApp h3, .stApp p, .stApp label, .stApp span, .stApp div {
+        color: #F8FAFC !important;
+    }
+
+    /* 2. BAŞLIK KUTUSU (Lacivert) */
+    .app-header {
+        background-color: #0F172A !important; 
         padding: 1.3rem 1.6rem;
         border-radius: 10px;
         margin-bottom: 1.2rem;
-        border-left: 5px solid {PRIMARY};
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    }}
-    .app-header h1 {{ color: white; margin: 0; font-size: 1.6rem; }}
-    .app-header p {{ color: #93C5FD; margin: 0.4rem 0 0 0; font-size: 1.05rem; font-weight: 500; }}
+        border-left: 5px solid #38BDF8;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    }
+    .app-header h1 { color: white !important; margin: 0; font-size: 1.6rem; }
+    .app-header p { color: #93C5FD !important; margin: 0.4rem 0 0 0; font-size: 1.05rem; font-weight: 500; }
+
+    /* 3. SAYI GİRİLEN YERLER - Arka plan Beyaz, Sayılar Siyah */
+    div[data-baseweb="input"] > div {
+        background-color: #FFFFFF !important;
+        border: 2px solid #94A3B8 !important;
+    }
+    div[data-baseweb="input"] input {
+        color: #000000 !important;
+        background-color: #FFFFFF !important;
+        -webkit-text-fill-color: #000000 !important;
+        font-weight: bold !important;
+    }
+    /* Sayı artırma/azaltma butonlarının (+ ve -) renkleri */
+    div[data-baseweb="input"] svg {
+        fill: #000000 !important;
+    }
     
-    .result-box {{
-        background-color: {PRIMARY};
-        color: white;
+    /* Seçim Kutusu (Gelişmiş Model İçin) */
+    div[data-baseweb="select"] > div {
+        background-color: #FFFFFF !important;
+    }
+    div[data-baseweb="select"] span {
+        color: #000000 !important;
+    }
+
+    /* 4. TAHMİN ET BUTONU - YEŞİL */
+    .stButton > button {
+        background-color: #10B981 !important; /* Zümrüt Yeşili */
+        color: white !important;
+        border: none !important;
+        font-size: 1.1rem !important;
+        font-weight: bold !important;
+        padding: 0.75rem 0 !important;
+        transition: all 0.2s ease-in-out;
+    }
+    .stButton > button:hover {
+        background-color: #059669 !important; /* Üzerine gelince daha koyu yeşil */
+        transform: scale(1.02);
+    }
+
+    /* 5. SONUÇ KUTULARI */
+    .result-box {
+        background-color: #0F172A !important;
+        color: white !important;
         padding: 1.4rem;
         border-radius: 10px;
         text-align: center;
         margin: 1rem 0;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    }}
-    .result-box .value {{ font-size: 2.3rem; font-weight: 700; }}
-    .result-box .label {{ font-size: 0.95rem; opacity: 0.9; }}
+        border: 2px solid #10B981 !important;
+    }
+    .result-box .value { font-size: 2.3rem !important; font-weight: 700 !important; color: #10B981 !important; }
+    .result-box .label { font-size: 0.95rem !important; opacity: 0.9 !important; color: white !important; }
     
-    .warn-box {{
-        background-color: #FEF2F2;
-        border: 1.5px solid {RED};
-        color: {RED};
+    .warn-box {
+        background-color: #FEF2F2 !important;
+        border: 1.5px solid #DC2626 !important;
+        color: #DC2626 !important;
         padding: 0.9rem 1.1rem;
         border-radius: 8px;
         font-size: 0.92rem;
         margin-top: 0.6rem;
-    }}
-    .ok-box {{
-        background-color: #ECFDF5;
-        border: 1.5px solid {GREEN};
-        color: {GREEN};
+    }
+    .ok-box {
+        background-color: #ECFDF5 !important;
+        border: 1.5px solid #10B981 !important;
+        color: #059669 !important;
         padding: 0.9rem 1.1rem;
         border-radius: 8px;
         font-size: 0.92rem;
         margin-top: 0.6rem;
-    }}
-    footer {{visibility: hidden;}}
+    }
+    footer {visibility: hidden;}
 </style>
 """, unsafe_allow_html=True)
 
 # ------------------------------------------------------------------
-# Başlık ve Kişisel Bilgiler (Değiştirilen Kısım)
+# Başlık ve Kişisel Bilgiler
 # ------------------------------------------------------------------
 st.markdown("""
 <div class="app-header">
@@ -87,7 +126,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ------------------------------------------------------------------
-# Model ve metaveriyi yükle (Dosya yolları düzeltilmiş haliyle)
+# Model ve metaveriyi yükle
 # ------------------------------------------------------------------
 @st.cache_resource
 def yukle():
@@ -204,9 +243,9 @@ if st.button("💰 Maliyeti Tahmin Et", type="primary", use_container_width=True
 
     if uyarilar:
         st.markdown(f"""
-        <div class="result-box" style="background-color:{RED};">
-            <div class="value">{tahmin:,.0f} TL</div>
-            <div class="label">Tahmini Toplam Maliyet — GÜVENİLİR DEĞİL</div>
+        <div class="result-box" style="background-color:#FEF2F2 !important; border: 2px solid #DC2626 !important;">
+            <div class="value" style="color: #DC2626 !important;">{tahmin:,.0f} TL</div>
+            <div class="label" style="color: #DC2626 !important;">Tahmini Toplam Maliyet — GÜVENİLİR DEĞİL</div>
         </div>
         """, unsafe_allow_html=True)
         st.markdown(

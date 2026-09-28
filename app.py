@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 """
 İnşaat Proje Maliyeti Tahmin Aracı
-Hafta 2'de kurduğumuz lineer regresyon modellerinin "gerçek kullanım ortamı".
-Kod bilmeyen biri bile bu ekrandan tahmini maliyeti öğrenebilir.
 """
 import json
 import joblib
@@ -19,26 +17,31 @@ st.set_page_config(
     layout="centered",
 )
 
-PRIMARY = "#D97706"  # İnşaat turuncusu (Modern Amber)
-NAVY = "#1F2937"     # Koyu gri/Lacivert (Slate)
-AMBER = "#F59E0B"
-GREEN = "#10B981"
-RED = "#EF4444"
+# YENİ RENK TEMASI (Mavi / Çelik Teması)
+PRIMARY = "#0284C7"    # Canlı Mavi
+NAVY = "#0F172A"       # Çok Koyu Lacivert (Başlık arka planı)
+BG_COLOR = "#F0F9FF"   # Açık Buz Mavisi (Genel arka plan)
+GREEN = "#059669"      # Zümrüt Yeşili
+RED = "#DC2626"        # Kırmızı
 
 st.markdown(f"""
 <style>
-    .main {{ background-color: #F9FAFB; }}
+    /* Arka plan rengi değiştirildi */
+    .stApp {{ background-color: {BG_COLOR}; }}
     .stApp header {{ background-color: transparent; }}
     h1 {{ color: {NAVY}; }}
+    
     .app-header {{
         background-color: {NAVY};
         padding: 1.3rem 1.6rem;
         border-radius: 10px;
         margin-bottom: 1.2rem;
         border-left: 5px solid {PRIMARY};
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     }}
     .app-header h1 {{ color: white; margin: 0; font-size: 1.6rem; }}
-    .app-header p {{ color: #D1D5DB; margin: 0.3rem 0 0 0; font-size: 0.95rem; }}
+    .app-header p {{ color: #93C5FD; margin: 0.4rem 0 0 0; font-size: 1.05rem; font-weight: 500; }}
+    
     .result-box {{
         background-color: {PRIMARY};
         color: white;
@@ -49,7 +52,8 @@ st.markdown(f"""
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     }}
     .result-box .value {{ font-size: 2.3rem; font-weight: 700; }}
-    .result-box .label {{ font-size: 0.95rem; opacity: 0.85; }}
+    .result-box .label {{ font-size: 0.95rem; opacity: 0.9; }}
+    
     .warn-box {{
         background-color: #FEF2F2;
         border: 1.5px solid {RED};
@@ -72,17 +76,18 @@ st.markdown(f"""
 </style>
 """, unsafe_allow_html=True)
 
-
-
+# ------------------------------------------------------------------
+# Başlık ve Kişisel Bilgiler (Değiştirilen Kısım)
+# ------------------------------------------------------------------
 st.markdown("""
 <div class="app-header">
     <h1>🏗️ İnşaat Proje Maliyeti Tahmin Aracı</h1>
-    <p>İnşaat Mühendisliğinde Yapay Zekâ Uygulamaları — Hafta 2 Lab Projesi</p>
+    <p>2023232064 - Hasan Karadağ - +90 544 971 50 52</p>
 </div>
 """, unsafe_allow_html=True)
 
 # ------------------------------------------------------------------
-# Model ve metaveriyi yükle (Dosyalar ana dizinde olduğu için klasör yolu silindi)
+# Model ve metaveriyi yükle (Dosya yolları düzeltilmiş haliyle)
 # ------------------------------------------------------------------
 @st.cache_resource
 def yukle():
@@ -110,7 +115,7 @@ model_secimi = st.sidebar.radio(
     "Hangi modeli kullanmak istersiniz?",
     ["Basit Model (Hücre 5)", "Gelişmiş Model (Hücre 5 — Devam)"],
     help="Basit model sadece alan ve kat sayısını kullanır. Gelişmiş model "
-         "zemin sınıfı ve inşaat yılını da ekler (bkz. Hafta 2 ders notu).",
+         "zemin sınıfı ve inşaat yılını da ekler.",
 )
 gelismis_mi = model_secimi.startswith("Gelişmiş")
 
@@ -123,8 +128,7 @@ if gelismis_mi:
     st.sidebar.metric("Test MAE", f"{m['mae']:,.0f} TL")
     st.sidebar.caption(
         "⚠️ Train R² ile Test R² arasındaki büyük fark, bu modelin "
-        "**aşırı öğrenme (overfitting)** riski taşıdığını gösterir — "
-        "Hafta 2'de birlikte incelediğimiz konu tam olarak budur."
+        "**aşırı öğrenme (overfitting)** riski taşıdığını gösterir."
     )
 else:
     m = meta["basit_model"]
@@ -165,7 +169,7 @@ if gelismis_mi:
         )
 
 # ------------------------------------------------------------------
-# Ekstrapolasyon kontrolü (Hafta 2, "Modelin Sınırlarını Bilmek")
+# Ekstrapolasyon kontrolü
 # ------------------------------------------------------------------
 def araligin_disinda_mi(deger, anahtar):
     lo, hi = meta[anahtar]["min"], meta[anahtar]["max"]
@@ -242,13 +246,10 @@ Basit model şu formülü kullanır:
 **Maliyet = {b['alan_katsayisi']:,.0f} × Alan + {b['kat_katsayisi']:,.0f} × Kat + sabit**
             """)
         st.caption(
-            "Not: Bu bir karar destek aracıdır, karar verici değil. Nihai kararı her zaman mühendis verir "
-            "(bkz. Hafta 2 ders notu, Bölüm: Model Eğitildikten Sonra Nasıl Kullanılır?)."
+            "Not: Bu bir karar destek aracıdır, karar verici değil. Nihai kararı her zaman mühendis verir."
         )
 
 st.markdown("---")
 st.caption(
-    "Bu araç, Hafta 2 dersinde eğitilip kaydedilen modelin "
-    "kod yazmayan kullanıcılar için bir web arayüzüne taşınmış hâlidir. "
-    "İnşaat Mühendisliğinde Yapay Zekâ Uygulamaları | 4. Sınıf | Güz Yarıyılı"
+    "2023232064 - Hasan Karadağ - +90 544 971 50 52"
 )

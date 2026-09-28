@@ -39,15 +39,6 @@ st.markdown(f"""
     }}
     .app-header h1 {{ color: white; margin: 0; font-size: 1.6rem; }}
     .app-header p {{ color: #D1D5DB; margin: 0.3rem 0 0 0; font-size: 0.95rem; }}
-    .student-info {{
-        background-color: white;
-        padding: 1rem;
-        border-radius: 8px;
-        border: 1px solid #E5E7EB;
-        margin-bottom: 1rem;
-        font-size: 0.9rem;
-    }}
-    .student-info strong {{ color: {PRIMARY}; }}
     .result-box {{
         background-color: {PRIMARY};
         color: white;
@@ -81,19 +72,7 @@ st.markdown(f"""
 </style>
 """, unsafe_allow_html=True)
 
-st.sidebar.markdown("""
-<div class="student-info">
-    <div style="text-align: center; margin-bottom: 10px;">
-        <h3 style="margin: 0; color: #1F2937; font-size: 1.1rem;">Hazırlayan Öğrenci</h3>
-    </div>
-    <div style="line-height: 1.6;">
-        <strong>Ad:</strong> [Adınızı Buraya Yazın]<br>
-        <strong>Soyad:</strong> [Soyadınızı Buraya Yazın]<br>
-        <strong>Öğrenci Numarası:</strong> [Numaranızı Yazın]<br>
-        <strong>Telefon:</strong> [Telefon Numaranız]
-    </div>
-</div>
-""", unsafe_allow_html=True)
+
 
 st.markdown("""
 <div class="app-header">
@@ -103,13 +82,13 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ------------------------------------------------------------------
-# Model ve metaveriyi yükle (Hücre 6'da kaydettiğimiz dosyalar)
+# Model ve metaveriyi yükle (Dosyalar ana dizinde olduğu için klasör yolu silindi)
 # ------------------------------------------------------------------
 @st.cache_resource
 def yukle():
-    basit = joblib.load("models/maliyet_modeli_basit.pkl")
-    gelismis = joblib.load("models/maliyet_modeli_gelismis.pkl")
-    with open("models/meta.json", encoding="utf-8") as f:
+    basit = joblib.load("maliyet_modeli_basit.pkl")
+    gelismis = joblib.load("maliyet_modeli_gelismis.pkl")
+    with open("meta.json", encoding="utf-8") as f:
         meta = json.load(f)
     return basit, gelismis, meta
 
@@ -117,8 +96,9 @@ try:
     model_basit, model_gelismis, meta = yukle()
 except FileNotFoundError:
     st.error(
-        "Model dosyaları bulunamadı. Önce `python train_models.py` çalıştırarak "
-        "modelleri eğitip `models/` klasörüne kaydedin."
+        "Model dosyaları bulunamadı. Lütfen 'maliyet_modeli_basit.pkl', "
+        "'maliyet_modeli_gelismis.pkl' ve 'meta.json' dosyalarının GitHub'da "
+        "app.py ile aynı yerde (ana dizinde) yüklü olduğundan emin olun."
     )
     st.stop()
 
@@ -268,7 +248,7 @@ Basit model şu formülü kullanır:
 
 st.markdown("---")
 st.caption(
-    "Bu araç, Hafta 2 dersinde eğitilip Google Drive'a kaydedilen modelin "
+    "Bu araç, Hafta 2 dersinde eğitilip kaydedilen modelin "
     "kod yazmayan kullanıcılar için bir web arayüzüne taşınmış hâlidir. "
     "İnşaat Mühendisliğinde Yapay Zekâ Uygulamaları | 4. Sınıf | Güz Yarıyılı"
 )
